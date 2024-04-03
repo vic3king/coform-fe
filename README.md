@@ -18,4 +18,8 @@ pnpm dev
 bun dev
 ```
 
+![Empty View State](https://github.com/vic3king/coform-uploader/blob/main/view1.png)
+![enentity View](https://github.com/vic3king/coform-uploader/blob/main/view.png)
+
+
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
