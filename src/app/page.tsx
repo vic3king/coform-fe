@@ -24,7 +24,7 @@ export default function Home() {
     setTimeout(() => {
       setMockLoading(false);
     }
-      , 5000);
+      , 6000); // delay for 6 seconds
 
     API.post('/users/3/documents', formData, {
       headers: {
