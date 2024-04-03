@@ -11,7 +11,6 @@ import FileUploader from "@/components/FileUploader";
 export default function Home() {
   const [files, setFiles] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
-  const [mockLoading, setMockLoading] = useState(false);
 
   const handleUpload = () => {
     const formData = new FormData();
@@ -20,31 +19,28 @@ export default function Home() {
     });
 
     setLoading(true);
-    setMockLoading(true);
-    setTimeout(() => {
-      setMockLoading(false);
-    }
-      , 6000); // delay for 6 seconds
 
-    API.post('/users/3/documents', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    }).then((resp): void => {
-      setLoading(false);
-      setFiles([]);
-      toast.success("Files uploaded successfully", {
-        duration: 5000
-      });
-    }).
-      catch((err): void => {
+    // Make API call after the delay
+    setTimeout(() => {
+      API.post('/users/3/documents', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }).then((resp): void => {
         setLoading(false);
-        setMockLoading(false);
+        setFiles([]);
+        toast.success("Files uploaded successfully", {
+          duration: 5000
+        });
+      }).catch((err): void => {
+        setLoading(false);
         toast.error(`Error uploading files: ${err.response.data.message}`, {
           duration: 5000
         });
       });
+    }, 6000); // Execute API call after 6 seconds delay
   }
+
 
 
   return (
@@ -60,7 +56,7 @@ export default function Home() {
         <FileUploader className="mb-10" setFiles={setFiles} files={files} />
         <div className="flex gap-2 flex-col max-h-[300px] overflow-y-scroll">
           {files.map((file, index) => (
-            <File key={index} fileName={file.name} loading={loading || mockLoading} />
+            <File key={index} fileName={file.name} loading={loading} />
           ))}
         </div>
         <div className="mt-10">

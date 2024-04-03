@@ -1,6 +1,7 @@
 'use client'
 
 import clsx from 'clsx';
+import { toast } from 'react-hot-toast';
 import { useState } from 'react';
 import { MdOutlineFileUpload } from 'react-icons/md';
 
@@ -25,12 +26,22 @@ const FileUploader = ({ className, setFiles, files }: IFileUploader) => {
   const handleDrop = (e: any) => {
     e.preventDefault();
     setDragging(false);
-    const droppedFiles = Array.from(e.dataTransfer.files);
-    setFiles([...files, ...droppedFiles]);
+    const droppedFiles: File[] = Array.from(e.dataTransfer.files);
+    validateAndSetFiles(droppedFiles);
   };
 
   const handleFileInputChange = (e: any) => {
-    const selectedFiles = Array.from(e.target.files);
+    const selectedFiles: File[] = Array.from(e.target.files);
+    validateAndSetFiles(selectedFiles);
+  };
+
+  const validateAndSetFiles = (selectedFiles: File[]) => {
+    const allowedTypes = ['application/pdf', 'text/plain'];
+    const invalidFiles = selectedFiles.filter(file => !allowedTypes.includes(file.type));
+    if (invalidFiles.length > 0) {
+      toast.error('Only .pdf and .txt files are allowed');
+      return;
+    }
     setFiles([...files, ...selectedFiles]);
   };
 
